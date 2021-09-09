@@ -12,7 +12,7 @@ env:
 jobs:
   arch-86:
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     env:
       CUDA_ARCH: 86
     steps:
@@ -37,7 +37,7 @@ jobs:
           docker push $IMAGE_TAG
   arch-80:
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     env:
       CUDA_ARCH: 80
     steps:
@@ -62,7 +62,7 @@ jobs:
           docker push $IMAGE_TAG
   arch-75:
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     env:
       CUDA_ARCH: 75
     steps:
@@ -87,7 +87,7 @@ jobs:
           docker push $IMAGE_TAG
   arch-70:
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     env:
       CUDA_ARCH: 70
     steps:
@@ -112,7 +112,7 @@ jobs:
           docker push $IMAGE_TAG
   arch-61:
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     env:
       CUDA_ARCH: 61
     steps:
@@ -137,7 +137,7 @@ jobs:
           docker push $IMAGE_TAG
   arch-60:
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     env:
       CUDA_ARCH: 60
     steps:
@@ -162,7 +162,7 @@ jobs:
           docker push $IMAGE_TAG
   arch-52:
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     env:
       CUDA_ARCH: 52
     steps:
