@@ -1,0 +1,74 @@
+name: On PR
+
+on:
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+  BASE_DOCKERFILE: Dockerfile.cuda-11.1
+
+jobs:
+  docker-build-test-86:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build Test - All Architecture
+        run: |
+          docker build --build-arg CUDA_ARCH=86 --pull -t dev/build:test-86 -f $BASE_DOCKERFILE .
+  docker-build-test-80:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build Test - All Architecture
+        run: |
+          docker build --build-arg CUDA_ARCH=80 --pull -t dev/build:test-80 -f $BASE_DOCKERFILE .
+  docker-build-test-75:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build Test - All Architecture
+        run: |
+          docker build --build-arg CUDA_ARCH=75 --pull -t dev/build:test-75 -f $BASE_DOCKERFILE .
+  docker-build-test-70:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build Test - All Architecture
+        run: |
+          docker build --build-arg CUDA_ARCH=70 --pull -t dev/build:test-70 -f $BASE_DOCKERFILE .
+  docker-build-test-61:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build Test - All Architecture
+        run: |
+          docker build --build-arg CUDA_ARCH=61 --pull -t dev/build:test-61 -f $BASE_DOCKERFILE .
+  docker-build-test-60:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build Test - All Architecture
+        run: |
+          docker build --build-arg CUDA_ARCH=60 --pull -t dev/build:test-60 -f $BASE_DOCKERFILE .
+  docker-build-test-52:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build Test - All Architecture
+        run: |
+          docker build --build-arg CUDA_ARCH=52 --pull -t dev/build:test-52 -f $BASE_DOCKERFILE .
