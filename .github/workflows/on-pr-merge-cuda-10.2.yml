@@ -1,0 +1,236 @@
+name: On PR Merge - CUDA 10.2
+
+on:
+  pull_request:
+    types: [closed]
+
+env:
+  BASE_DOCKERFILE: cuda-10.2.Dockerfile
+  BASE_IMAGE_NAME: pinteraktif/cuda-opencv-ffmpeg:10.2
+
+jobs:
+  arch-75:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-20.04
+    env:
+      CUDA_ARCH: 75
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build & Push
+        run: |
+          # Login to Github docker registry
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+          # Compose proper Image ID
+          IMAGE_TAG=ghcr.io/$BASE_IMAGE_NAME-$CUDA_ARCH
+
+          # Change all uppercase to lowercase
+          IMAGE_TAG=$(echo $IMAGE_TAG | tr '[A-Z]' '[a-z]')
+
+          echo IMAGE_TAG=$IMAGE_TAG
+
+          # Build then push
+          docker build --build-arg CUDA_ARCH=$CUDA_ARCH --pull -t $IMAGE_TAG -f $BASE_DOCKERFILE .
+          docker push $IMAGE_TAG
+  arch-70:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-20.04
+    env:
+      CUDA_ARCH: 70
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build & Push
+        run: |
+          # Login to Github docker registry
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+          # Compose proper Image ID
+          IMAGE_TAG=ghcr.io/$BASE_IMAGE_NAME-$CUDA_ARCH
+
+          # Change all uppercase to lowercase
+          IMAGE_TAG=$(echo $IMAGE_TAG | tr '[A-Z]' '[a-z]')
+
+          echo IMAGE_TAG=$IMAGE_TAG
+
+          # Build then push
+          docker build --build-arg CUDA_ARCH=$CUDA_ARCH --pull -t $IMAGE_TAG -f $BASE_DOCKERFILE .
+          docker push $IMAGE_TAG
+  arch-61:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-20.04
+    env:
+      CUDA_ARCH: 61
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build & Push
+        run: |
+          # Login to Github docker registry
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+          # Compose proper Image ID
+          IMAGE_TAG=ghcr.io/$BASE_IMAGE_NAME-$CUDA_ARCH
+
+          # Change all uppercase to lowercase
+          IMAGE_TAG=$(echo $IMAGE_TAG | tr '[A-Z]' '[a-z]')
+
+          echo IMAGE_TAG=$IMAGE_TAG
+
+          # Build then push
+          docker build --build-arg CUDA_ARCH=$CUDA_ARCH --pull -t $IMAGE_TAG -f $BASE_DOCKERFILE .
+          docker push $IMAGE_TAG
+  arch-60:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-20.04
+    env:
+      CUDA_ARCH: 60
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build & Push
+        run: |
+          # Login to Github docker registry
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+          # Compose proper Image ID
+          IMAGE_TAG=ghcr.io/$BASE_IMAGE_NAME-$CUDA_ARCH
+
+          # Change all uppercase to lowercase
+          IMAGE_TAG=$(echo $IMAGE_TAG | tr '[A-Z]' '[a-z]')
+
+          echo IMAGE_TAG=$IMAGE_TAG
+
+          # Build then push
+          docker build --build-arg CUDA_ARCH=$CUDA_ARCH --pull -t $IMAGE_TAG -f $BASE_DOCKERFILE .
+          docker push $IMAGE_TAG
+  arch-52:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-20.04
+    env:
+      CUDA_ARCH: 52
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build & Push
+        run: |
+          # Login to Github docker registry
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+          # Compose proper Image ID
+          IMAGE_TAG=ghcr.io/$BASE_IMAGE_NAME-$CUDA_ARCH
+
+          # Change all uppercase to lowercase
+          IMAGE_TAG=$(echo $IMAGE_TAG | tr '[A-Z]' '[a-z]')
+
+          echo IMAGE_TAG=$IMAGE_TAG
+
+          # Build then push
+          docker build --build-arg CUDA_ARCH=$CUDA_ARCH --pull -t $IMAGE_TAG -f $BASE_DOCKERFILE .
+          docker push $IMAGE_TAG
+  arch-50:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-20.04
+    env:
+      CUDA_ARCH: 50
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build & Push
+        run: |
+          # Login to Github docker registry
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+          # Compose proper Image ID
+          IMAGE_TAG=ghcr.io/$BASE_IMAGE_NAME-$CUDA_ARCH
+
+          # Change all uppercase to lowercase
+          IMAGE_TAG=$(echo $IMAGE_TAG | tr '[A-Z]' '[a-z]')
+
+          echo IMAGE_TAG=$IMAGE_TAG
+
+          # Build then push
+          docker build --build-arg CUDA_ARCH=$CUDA_ARCH --pull -t $IMAGE_TAG -f $BASE_DOCKERFILE .
+          docker push $IMAGE_TAG
+  arch-37:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-20.04
+    env:
+      CUDA_ARCH: 37
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build & Push
+        run: |
+          # Login to Github docker registry
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+          # Compose proper Image ID
+          IMAGE_TAG=ghcr.io/$BASE_IMAGE_NAME-$CUDA_ARCH
+
+          # Change all uppercase to lowercase
+          IMAGE_TAG=$(echo $IMAGE_TAG | tr '[A-Z]' '[a-z]')
+
+          echo IMAGE_TAG=$IMAGE_TAG
+
+          # Build then push
+          docker build --build-arg CUDA_ARCH=$CUDA_ARCH --pull -t $IMAGE_TAG -f $BASE_DOCKERFILE .
+          docker push $IMAGE_TAG
+  arch-35:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-20.04
+    env:
+      CUDA_ARCH: 35
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build & Push
+        run: |
+          # Login to Github docker registry
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+          # Compose proper Image ID
+          IMAGE_TAG=ghcr.io/$BASE_IMAGE_NAME-$CUDA_ARCH
+
+          # Change all uppercase to lowercase
+          IMAGE_TAG=$(echo $IMAGE_TAG | tr '[A-Z]' '[a-z]')
+
+          echo IMAGE_TAG=$IMAGE_TAG
+
+          # Build then push
+          docker build --build-arg CUDA_ARCH=$CUDA_ARCH --pull -t $IMAGE_TAG -f $BASE_DOCKERFILE .
+          docker push $IMAGE_TAG
+  arch-30:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-20.04
+    env:
+      CUDA_ARCH: 30
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Build & Push
+        run: |
+          # Login to Github docker registry
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+          # Compose proper Image ID
+          IMAGE_TAG=ghcr.io/$BASE_IMAGE_NAME-$CUDA_ARCH
+
+          # Change all uppercase to lowercase
+          IMAGE_TAG=$(echo $IMAGE_TAG | tr '[A-Z]' '[a-z]')
+
+          echo IMAGE_TAG=$IMAGE_TAG
+
+          # Build then push
+          docker build --build-arg CUDA_ARCH=$CUDA_ARCH --pull -t $IMAGE_TAG -f $BASE_DOCKERFILE .
+          docker push $IMAGE_TAG
