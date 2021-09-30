@@ -1,12 +1,14 @@
-FROM nvidia/cuda:11.1-cudnn8-devel-ubuntu20.04
+FROM nvidia/cuda:11.4.2-cudnn8-devel-ubuntu20.04
 
 LABEL maintainer "Wu Assassin <jambang.pisang@gmail.com>"
 LABEL org.opencontainers.image.source https://github.com/pinteraktif/dockerized-opencv-cuda
 
 ENV DEBIAN_FRONTEND="noninteractive"
 ENV TZ="Etc/UTC"
-ENV PATH="/app/ffmpeg/bin:${PATH}"
+ENV PATH="/app/ffmpeg/bin${PATH:+:${PATH}}"
 ENV PATH="/app/opencv/bin:${PATH}"
+ENV PATH="/root/.cargo/bin:${PATH}"
+ENV PATH="/usr/lib/llvm-12/bin:${PATH}"
 ENV NVCCPARAMS="-O3"
 
 RUN mkdir -p /app/source && \
@@ -23,12 +25,30 @@ COPY 05-svt-av1 05-svt-av1
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+    apt-utils \
+    software-properties-common \
+    wget && \
+    wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
+    echo "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-12 main" > /etc/apt/sources.list.d/clang.list && \
+    echo "/app/ffmpeg/lib" > /etc/ld.so.conf.d/ffmpeg.conf && \
+    echo "/app/opencv/lib" > /etc/ld.so.conf.d/opencv.conf && \
+    echo "/usr/lib/llvm-12/lib" > /etc/ld.so.conf.d/llvm.conf
+
+
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends \
     autoconf \
     automake \
     build-essential \
     ca-certificates \
     ccache \
     checkinstall \
+    clang-12 \
+    clang-12-doc \
+    clang-format-12 \
+    clang-tools-12 \
+    clangd-12 \
     cmake \
     curl \
     doxygen \
@@ -44,6 +64,12 @@ RUN apt-get update && \
     libavcodec-dev \
     libavformat-dev \
     libavresample-dev \
+    libc++-12-dev \
+    libc++abi-12-dev \
+    libclang-12-dev \
+    libclang-common-12-dev \
+    libclang1-12 \
+    libclc-12-dev \
     libdc1394-22 \
     libdc1394-22-dev \
     libdrm-dev \
@@ -54,6 +80,7 @@ RUN apt-get update && \
     libfaac-dev \
     libfdk-aac-dev \
     libfreetype6-dev \
+    libfuzzer-12-dev \
     libgdal-dev \
     libgflags-dev \
     libgif-dev \
@@ -66,8 +93,11 @@ RUN apt-get update && \
     libharfbuzz-dev \
     libhdf5-dev \
     libjack-jackd2-dev \
+    libllvm-12-ocaml-dev \
+    libllvm12 \
     libmp3lame-dev \
     libnuma-dev \
+    libomp-12-dev \
     libopencore-amrnb-dev \
     libopencore-amrwb-dev \
     libopengl-dev \
@@ -77,6 +107,7 @@ RUN apt-get update && \
     libpng++-dev \
     libprotobuf-dev \
     librsvg2-dev \
+    libsasl2-dev \
     libsass-dev \
     libsdl2-dev \
     libssh-dev \
@@ -89,6 +120,7 @@ RUN apt-get update && \
     libtiff5-dev \
     libtool \
     libunistring-dev \
+    libunwind-12-dev \
     libv4l-dev \
     libva-dev \
     libvdpau-dev \
@@ -104,8 +136,18 @@ RUN apt-get update && \
     libxine2-dev \
     libxvidcore-dev \
     libzstd-dev \
+    lld-12 \
+    lldb-12 \
+    llvm-12 \
+    llvm-12-dev \
+    llvm-12-doc \
+    llvm-12-examples \
+    llvm-12-runtime \
     make \
     meson \
+    musl \
+    musl-dev \
+    musl-tools \
     nasm \
     ninja-build\
     p7zip-full \
@@ -114,13 +156,13 @@ RUN apt-get update && \
     pylint \
     python-is-python3 \
     python3 \
+    python3-clang-12 \
     python3-dev \
     python3-pip \
     python3-setuptools \
     python3-testresources \
     python3-venv \
     python3-wheel \
-    software-properties-common \
     texinfo \
     unzip \
     v4l-utils \
@@ -128,6 +170,7 @@ RUN apt-get update && \
     x264 \
     yasm \
     zlib1g-dev && \
+    ldconfig && \
     rm -rf /var/lib/apt/lists/*
 
 RUN pip install numpy BeautifulSoup4
@@ -139,11 +182,12 @@ RUN mkdir /app/source/04-dav1d/build && \
     meson setup \
     -D enable_tools="false" \
     -D enable_test="false" \
-    --default-library="static" .. \
+    --libdir="/app/ffmpeg/lib" \
     --prefix="/app/ffmpeg" \
-    --libdir="/app/ffmpeg/lib" && \
+    .. && \
     ninja && \
-    ninja install
+    ninja install && \
+    ldconfig
 
 RUN mkdir /app/source/05-svt-av1/build && \
     cd /app/source/05-svt-av1/build && \
@@ -151,12 +195,14 @@ RUN mkdir /app/source/05-svt-av1/build && \
     -D CMAKE_INSTALL_PREFIX="/app/ffmpeg" \
     -D CMAKE_BUILD_TYPE="Release" \
     -D BUILD_DEC="ON" \
-    -D BUILD_SHARED_LIBS="OFF" .. && \
+    -D BUILD_SHARED_LIBS="ON" .. && \
     make -j$(nproc) && \
-    make install
+    make install && \
+    ldconfig
 
 RUN cd /app/source/03-nv-codec-headers && \
-    make install
+    make install && \
+    ldconfig
 
 ARG CUDA_ARCH
 ENV NVCCPARAMS="${NVCCPARAMS} -gencode arch=compute_${CUDA_ARCH},code=sm_${CUDA_ARCH}"
@@ -194,11 +240,11 @@ RUN cd /app/source/02-ffmpeg && \
     --extra-ldflags="-L/app/ffmpeg/lib -L/usr/local/cuda/lib64" \
     --extra-libs="-lpthread -lm" \
     --nvccflags="${NVCCPARAMS}" \
-    --pkg-config-flags="--static" \
     --prefix="/app/ffmpeg"; \
     tail -50 ffbuild/config.log && \
     make -j$(nproc) && \
-    make install
+    make install && \
+    ldconfig
 
 ### OpenCV
 
@@ -211,7 +257,8 @@ RUN mkdir /app/source/00-opencv/build && \
     -D BUILD_opencv_cudacodec="ON" \
     -D BUILD_opencv_python2="OFF" \
     -D BUILD_opencv_python3="ON" \
-    -D BUILD_SHARED_LIBS="OFF" \
+    -D BUILD_opencv_world="ON" \
+    -D BUILD_SHARED_LIBS="ON" \
     -D CMAKE_INSTALL_PREFIX="/app/opencv" \
     -D CPU_BASELINE="AVX" \
     -D CPU_DISPATCH="AVX,AVX2" \
@@ -240,6 +287,7 @@ RUN mkdir /app/source/00-opencv/build && \
     -D WITH_GDAL="ON" \
     -D WITH_GSTREAMER="ON" \
     -D WITH_GTK="ON" \
+    -D WITH_ITT="OFF" \
     -D WITH_NVCUVID="ON" \
     -D WITH_OPENGL="ON" \
     -D WITH_QT="OFF" \
@@ -247,9 +295,25 @@ RUN mkdir /app/source/00-opencv/build && \
     -D WITH_V4L="ON" \
     .. && \
     make -j$(nproc) && \
-    make install
+    make install && \
+    ldconfig
 
-RUN cp /app/opencv/lib/python3.8/dist-packages/cv2/python-3.8/cv2.cpython-38-x86_64-linux-gnu.so \
-    /usr/local/lib/python3.8/dist-packages/cv2.so
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain stable -y
+
+RUN rustup default 1.55.0 && \
+    rustup target add x86_64-unknown-linux-musl && \
+    rustup update
+
+RUN ln -s /app/opencv/lib/python3.8/dist-packages/cv2/python-3.8/cv2.cpython-38-x86_64-linux-gnu.so \
+    /usr/local/lib/python3.8/dist-packages/cv2.so && \
+    echo "/usr/local/lib/python3.8/dist-packages/" > /etc/ld.so.conf.d/cv2.conf && \
+    ldconfig
+
+RUN echo "** Clang **" && clang -v && echo "" && \
+    echo "** GCC **" && gcc -v && echo "" && \
+    echo "** Python **" && python --version && echo "" && \
+    echo "** Rust **" && rustc -vV && echo "" && \
+    echo "** OpenCV **" && python3 -c "import cv2; print(cv2.getBuildInformation())" && echo "" && \
+    echo "** FFmpeg **" && ffmpeg -version && echo ""
 
 WORKDIR /app

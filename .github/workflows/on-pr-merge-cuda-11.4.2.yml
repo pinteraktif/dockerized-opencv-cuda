@@ -1,13 +1,12 @@
-name: On PR Merge
+name: On PR Merge - CUDA 11.4.2
 
 on:
   pull_request:
     types: [closed]
 
 env:
-  CARGO_TERM_COLOR: always
-  BASE_DOCKERFILE: Dockerfile.cuda-11.1
-  BASE_IMAGE_NAME: pinteraktif/cuda-opencv-ffmpeg:11.1
+  BASE_DOCKERFILE: cuda-11.4.2.Dockerfile
+  BASE_IMAGE_NAME: pinteraktif/cuda-opencv-ffmpeg:11.4.2
 
 jobs:
   arch-86:
