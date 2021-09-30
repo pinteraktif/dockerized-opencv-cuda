@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.2-cudnn8-devel-ubuntu18.04
+FROM nvcr.io/nvidia/pytorch:20.03-py3
 
 LABEL maintainer "Wu Assassin <jambang.pisang@gmail.com>"
 LABEL org.opencontainers.image.source https://github.com/pinteraktif/dockerized-opencv-cuda
