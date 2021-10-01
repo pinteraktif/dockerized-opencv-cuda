@@ -2,20 +2,20 @@
 
 ## Supported CUDA Versions
 
-- `10.2` with `cudnn 8.2.4` and base `ubuntu 18.04`
-- `11.1` with `cudnn 8.2.4` and base `ubuntu 20.04`
-- `11.4.2` with `cudnn 8.2.4` and base `ubuntu 20.04`
+- [10.2.89](https://docs.nvidia.com/deeplearning/frameworks/pytorch-release-notes/rel_20-03.html#rel_20-03)
+- [11.1.1](https://docs.nvidia.com/deeplearning/frameworks/pytorch-release-notes/rel_20-12.html#rel_20-12)
+- [11.4.2](https://docs.nvidia.com/deeplearning/frameworks/pytorch-release-notes/rel_21-09.html#rel_21-09)
 
 ## Compiler Supports
 
-### Ubuntu 18.04 Base
+### CUDA 10.2
 
 - Clang `12.0.1`
 - GCC `7.5.0`
 - Python `3.6.9`
 - Rust `1.55.0`
 
-### Ubuntu 20.04 Base
+### CUDA 11.1.1 & 11.4.2
 
 - Clang `12.0.1`
 - GCC `9.3.0`
