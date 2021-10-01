@@ -6,7 +6,7 @@ on:
 
 env:
   BASE_DOCKERFILE: cuda-11.1.1.Dockerfile
-  BASE_IMAGE_NAME: pinteraktif/cuda-opencv-ffmpeg:11.1
+  BASE_IMAGE_NAME: pinteraktif/cuda-opencv-ffmpeg:11.1.1
 
 jobs:
   arch-86:
